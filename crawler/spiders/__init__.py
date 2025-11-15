@@ -1,1 +1,0 @@
-from .inventory_spider import InventorySpider

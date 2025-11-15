@@ -1,6 +1,4 @@
 .idea
 .git
-.venv
-__pycache__
 .gitignore
 node_modules

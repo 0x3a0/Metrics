@@ -1,20 +1,9 @@
 <script setup>
-    import { ref } from 'vue'
-
-    import sidebarLayout from '@/components/sidebarLayout.vue'
-
-    const logoPath = '/logo.webp'
-
-    const sidebarItems = ref([
-        {name: 'home', tooltip: 'Home', path: '/'},
-        {name: 'analytics', tooltip: 'Analysis', path: '/analysis'},
-        {name: 'settings', tooltip: 'Settings', path: '/settings'}
-    ])
+import Sidebar from '@/components/sidebar.vue';
 </script>
 
 <template>
-    <sidebarLayout :items="sidebarItems" :logo="logoPath" logoName="Cshub"/>
+    <sidebar></sidebar>
 </template>
 
-<style scoped>
-</style>
+<style scoped></style>
