@@ -10,7 +10,7 @@ const props = defineProps({
 </script>
 
 <template>
-  <div v-for="item in items" :key="item.id" class="p-5 border rounded-md border-zinc-950/10">
+  <div v-for="item in props.items" :key="item.id" class="p-4 border rounded-md border-zinc-950/10">
     <header class="text-sm font-medium text-zinc-700">
       <span>{{item.title}}</span>
     </header>
