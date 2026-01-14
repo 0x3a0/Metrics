@@ -1,17 +1,22 @@
 {
-  "name": "analysis_cs_backend",
+  "name": "metrics_backend",
   "version": "1.0.0",
-  "main": "app.js",
+  "main": "server.js",
   "type": "module",
   "scripts": {
-    "test": "nodemon app.js"
+    "dev": "nodemon server.js",
+    "start": "set NODE_ENV=production && nodemon server.js"
   },
-  "author": "",
+  "author": "0x3a0",
   "license": "ISC",
   "description": "",
   "dependencies": {
+    "axios": "^1.13.2",
+    "better-sqlite3": "^12.5.0",
+    "cheerio": "^1.1.2",
     "cors": "^2.8.5",
-    "express": "^5.1.0",
-    "mongodb": "^6.17.0"
+    "dotenv": "^17.2.3",
+    "express": "^5.2.1",
+    "morgan": "^1.10.1"
   }
 }
