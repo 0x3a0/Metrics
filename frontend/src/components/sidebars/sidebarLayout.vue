@@ -9,7 +9,7 @@ const props = defineProps([
 const timeQuantum = ref(null);
 const judgeTimeQuantum = () => {
   const hour = new Date().getHours();
-  if (hour < 12) {
+  if (hour > 6 && hour < 12) {
     timeQuantum.value = "早上好";
   } else if  (hour >= 12 && hour < 18) {
     timeQuantum.value = "下午好"
