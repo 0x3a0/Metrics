@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Title</title>
+</head>
+<body>
+<script>
+  const source = new EventSource('http://localhost:9280/api/v1/inventory?steam_id=76561199405541900&page=1&pageSize=10');
+
+  source.onmessage = (event) => {
+    const data = JSON.parse(event.data);
+    console.log('收到数据:', data);
+  };
+
+  source.onerror = (err) => {
+    console.error('SSE error', err);
+  };
+</script>
+</body>
+</html>
