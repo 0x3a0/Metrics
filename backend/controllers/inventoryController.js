@@ -2,19 +2,35 @@ import catchSync from "../utils/catchSync.js";
 import * as inventoryModel from "./../models/inventoryModel.js";
 
 
-// 创建一个SSE端点，用于实时发送库存数据
-export const inventoryInfo = catchSync((req, res) => {
-  // 设置SSE响应头
+/**
+ * 获取历史库存
+ * @route GET /api/v1/inventory/history
+ * @param {string} steamId - steam id
+ * @returns {Promise} - 包含历史库存的 JSON 响应
+ */
+export const historyInventory = catchSync((req, res) => {
+  const { steamId } = req.query;
+  const history = inventoryModel.getInventory.all(steamId);
+  res.json(history);
+})
+
+/**
+ * 通过 SSE 获取实时库存数据
+ * @route GET /api/v1/inventory/realTime
+ * @param {string} steamId - steam id
+ * @param {timestamp} time - 时间戳
+ * @returns {Promise} - 包含实时库存数据的 JSON 响应
+ */
+export const realTimeInventory = catchSync((req, res) => {
+  // SSE响应头
   res.writeHead(200, {
     "Content-Type": "text/event-stream",
     "Cache-Control": "no-cache",
     "Connection": "keep-alive"
   });
-
-  const { steam_id, page, pageSize } = req.query;
-  const offset = (page - 1) * pageSize;
-
-  const inventories = inventoryModel.getInventory.all(steam_id, pageSize, offset);
+  
+  const { steamId } = req.query;
+  const inventories = inventoryModel.getInventory.all(steamId);
 
   // 定时发送数据
   let counter = 0;

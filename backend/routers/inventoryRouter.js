@@ -5,8 +5,7 @@ import * as inventoryController from '../controllers/inventoryController.js'
 
 const inventoryRouter = express.Router();
 
-inventoryRouter
-    .route('/')
-    .get(inventoryController.inventoryInfo)
+inventoryRouter.get("/history", inventoryController.historyInventory);
+inventoryRouter.get("/realTime", inventoryController.realTimeInventory);
 
 export default inventoryRouter;
