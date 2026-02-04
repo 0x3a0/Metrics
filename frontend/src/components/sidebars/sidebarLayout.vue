@@ -6,6 +6,7 @@ const props = defineProps([
   "webName",
 ])
 
+// 时间
 const timeQuantum = ref(null);
 const judgeTimeQuantum = () => {
   const hour = new Date().getHours();
@@ -18,6 +19,9 @@ const judgeTimeQuantum = () => {
   }
 }
 
+// 查询是否绑定账号
+const isBind = ref(false);
+
 onMounted(() => {
   judgeTimeQuantum();
 })
@@ -29,7 +33,7 @@ onMounted(() => {
     <aside class="fixed inset-y-0 left-0 w-64">
       <div class="flex flex-col h-full">
         <!-- Sidebar header -->
-        <div class="shrink-0 px-4 py-3.5">   <!-- shrink-0 防止flex item缩小 -->
+        <div class="shrink-0 px-4 py-3.5">   <!-- shrink-0: 防止该 flex item 缩小 -->
           <button class="flex items-center text-base/6 text-left font-semibold">
             <img src="@/assets/logo.svg" alt="">
             <span>{{ props.webName }}</span>
@@ -54,10 +58,14 @@ onMounted(() => {
     <!-- main -->
     <div class="flex-1 flex flex-col ml-64 pb-2 pt-2 pr-2">
       <div class="grow border border-zinc-950/10 bg-white rounded-lg shadow-xs px-10 py-9">
-        <h1 class="text-2xl/6 font-semibold">{{ timeQuantum }}</h1>
-
-        <!-- main container -->
-        <slot name="main-content"></slot>
+        <div v-if="!isBind" class="h-full flex-1 flex items-center justify-center">
+          <div class="loading loading-ring loading-xl"></div>
+        </div>
+        <div v-else>
+          <!-- main container -->
+          <h1 class="text-2xl/6 font-semibold">{{ timeQuantum }}</h1>
+          <slot name="main-content"></slot>
+        </div>
       </div>
     </div>
   </div>
