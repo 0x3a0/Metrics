@@ -5,26 +5,6 @@ import {defineProps, onMounted, ref} from 'vue';
 const props = defineProps([
   "webName",
 ])
-
-// 时间
-const timeQuantum = ref(null);
-const judgeTimeQuantum = () => {
-  const hour = new Date().getHours();
-  if (hour > 6 && hour < 12) {
-    timeQuantum.value = "早上好";
-  } else if  (hour >= 12 && hour < 18) {
-    timeQuantum.value = "下午好"
-  } else {
-    timeQuantum.value = "晚上好";
-  }
-}
-
-// 查询是否绑定账号
-const isBind = ref(false);
-
-onMounted(() => {
-  judgeTimeQuantum();
-})
 </script>
 
 <template>
@@ -58,14 +38,8 @@ onMounted(() => {
     <!-- main -->
     <div class="flex-1 flex flex-col ml-64 pb-2 pt-2 pr-2">
       <div class="grow border border-zinc-950/10 bg-white rounded-lg shadow-xs px-10 py-9">
-        <div v-if="!isBind" class="h-full flex-1 flex items-center justify-center">
-          <div class="loading loading-ring loading-xl"></div>
-        </div>
-        <div v-else>
-          <!-- main container -->
-          <h1 class="text-2xl/6 font-semibold">{{ timeQuantum }}</h1>
-          <slot name="main-content"></slot>
-        </div>
+        <!-- main container -->
+        <slot name="main-content"></slot>
       </div>
     </div>
   </div>
