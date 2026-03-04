@@ -1,67 +1,43 @@
 <script setup>
 import axios from 'axios';
 import { ref, onMounted } from 'vue';
-
 import SidebarLayout from '@/components/sidebars/sidebarLayout.vue';
 import SidebarContent from '@/components/sidebars/sidebarContent.vue';
-import DashboardIcon from '@/components/icons/dashboardIcon.vue';
-import SettingIcon from '@/components/icons/settingIcon.vue';
 import LineCard from "@/components/cards/lineCard.vue";
 import TreemapCard from "@/components/cards/treemapCard.vue";
 import InventoryTable from '@/components/tables/inventoryTable.vue';
 
 
-const data = {
-  sidebar: {
-    webName: "Metrics",
-    content: [
-      {
-        "id": 1,
-        "title": "Dashboard",
-        "icon": DashboardIcon
-      },
-      {
-        "id": 2,
-        "title": "Setting",
-        "icon": SettingIcon
+// 库存数据
+let inventoryDatas = ref([]);
+// 时间
+const timeQuantum = ref("");
+// 账号绑定状态
+const bind = ref();
+// 加载状态，默认为 true
+const loading = ref(true);
+
+
+// 获取绑定账号
+async function getAccount() {
+  try {
+    const resp = await axios.get("http://localhost:9280/api/v1/user/getAccount");
+    setTimeout(() => {
+      if (resp.data['message']['accounts'].length > 0) {
+        bind.value = true;
+        loading.value = false;
+      } else {
+        bind.value = false;
+        loading.value = false;
       }
-    ]
-  },
-  lineChart: {
-    name: "库存分析",
-    totalValue: 1883,
-    data: [
-      {
-        "time": "2026/1/13 16:41:00",
-        "value": 1220
-      },
-      {
-        "time": "2026/1/13 16:42:00",
-        "value": 1228
-      },
-      {
-        "time": "2026/1/13 16:43:00",
-        "value": 1250
-      },
-      {
-        "time": "2026/1/13 16:44:00",
-        "value": 1182
-      },
-      {
-        "time": "2026/1/13 16:45:00",
-        "value": 1241
-      },
-    ]
+    }, 2500)
+  } catch (err) {
+    console.error(err);
   }
 }
 
-let inventories = ref([]);
-// 时间
-const timeQuantum = ref("");
-const isBind = ref(false);
-
 // 计算当前时间
-const judgeTimeQuantum = () => {
+function judgeTimeQuantum() {
   const hour = new Date().getHours();
   if (hour > 6 && hour < 12) {
     timeQuantum.value = "早上好";
@@ -70,45 +46,47 @@ const judgeTimeQuantum = () => {
   } else {
     timeQuantum.value = "晚上好";
   }
-  console.log(timeQuantum.value)
 }
 
 onMounted(() => {
+  getAccount();
   judgeTimeQuantum();
 }
 )
 </script>
 
 <template>
-  <sidebar-layout :webName="data.sidebar.webName">
+  <sidebar-layout>
     <template v-slot:sidebar-content>
-      <SidebarContent :items="data.sidebar.content"></SidebarContent>
+      <SidebarContent></SidebarContent>
     </template>
 
     <template v-slot:main-content>
-      <div v-if="!isBind" class="h-full flex-1 flex items-center justify-center">
+      <!-- 加载状态 -->
+      <div v-if="loading" class="h-full flex-1 flex items-center justify-center">
         <div class="loading loading-ring loading-xl"></div>
       </div>
-      <div v-else>
-        <h1 class="text-2xl/6 font-semibold">{{ timeQuantum }}</h1>
-        <div class="mt-8 flex flex-row h-90 gap-8">
-          <!-- 估值分析折线图 -->
-          <div class="flex-3">
-            <LineCard :name="data.lineChart.name" :totalValue="data.lineChart.totalValue" :data="data.lineChart.data"></LineCard>
-          </div>
-          <!-- treemap -->
-          <div class="flex-2">
-            <TreemapCard></TreemapCard>
-          </div>
-        </div>
 
-        <div class="mt-10">
-          <!-- 库存表格 -->
-          <InventoryTable :inventories="inventories"></InventoryTable>
-        </div>
+      <!-- 账户未绑定状态 -->
+      <div v-if="bind == false" class="h-full flex-1 flex items-center justify-center">
+        <span class="text-base underline hover:cursor-pointer">点我绑定Steam账户</span>
       </div>
+      
     </template>
   </sidebar-layout>
 </template>
 
-<style scoped></style>
+<style scoped>
+/* 动画定义 */
+.slide-down-enter-active,
+.slide-down-leave-active {
+  transition: all 0.5s ease-out;
+}
+
+/* 进入前和离开后的状态：向上偏移并透明 */
+.slide-down-enter-from,
+.slide-down-leave-to {
+  opacity: 0;
+  transform: translateY(-100%);
+}
+</style>
