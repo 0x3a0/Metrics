@@ -1,10 +1,5 @@
 <script setup>
 import {defineProps, onMounted, ref} from 'vue';
-
-
-const props = defineProps([
-  "webName",
-])
 </script>
 
 <template>
@@ -16,7 +11,7 @@ const props = defineProps([
         <div class="shrink-0 px-4 py-3.5">   <!-- shrink-0: 防止该 flex item 缩小 -->
           <button class="flex items-center text-base/6 text-left font-semibold">
             <img src="@/assets/logo.svg" alt="">
-            <span>{{ props.webName }}</span>
+            <span>Metrics</span>
           </button>
         </div>
 
@@ -31,9 +26,6 @@ const props = defineProps([
         </div>
       </div>
     </aside>
-
-    <!-- skeleton-->
-    <div></div>
 
     <!-- main -->
     <div class="flex-1 flex flex-col ml-64 pb-2 pt-2 pr-2">

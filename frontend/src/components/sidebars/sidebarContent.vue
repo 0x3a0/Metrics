@@ -1,12 +1,8 @@
 <script setup>
 import {defineProps, ref} from 'vue';
+import DashboardIcon from '@/components/icons/dashboardIcon.vue';
+import SettingIcon from '@/components/icons/settingIcon.vue';
 
-
-const props = defineProps({
-  items: {
-    type: Array
-  }
-})
 
 const activeId = ref(1);
 const setActiveItem = id => {
@@ -15,10 +11,16 @@ const setActiveItem = id => {
 </script>
 
 <template>
-  <a href="/" v-for="item in props.items" :key="item.id" class="px-2 py-1.5 rounded-lg hover:bg-zinc-950/5 text-sm" :class="[activeId === item.id ? 'bg-zinc-950/5' : '']" @click="setActiveItem(item.id)">
+  <a href="/" class="px-2 py-1.5 rounded-lg hover:bg-zinc-950/5 text-sm">
     <div class="flex gap-2 items-center">
-      <component :is="item.icon" class="w-5 h-5"></component>
-      <span class="flex-1 font-medium">{{item.title}}</span>
+      <component :is="DashboardIcon" class="w-5 h-5"></component>
+      <span class="flex-1 font-medium">Dashboard</span>
+    </div>
+  </a>
+  <a href="/" class="px-2 py-1.5 rounded-lg hover:bg-zinc-950/5 text-sm">
+    <div class="flex gap-2 items-center">
+      <component :is="SettingIcon" class="w-5 h-5"></component>
+      <span class="flex-1 font-medium">Setting</span>
     </div>
   </a>
 </template>
