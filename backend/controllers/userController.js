@@ -5,15 +5,17 @@ import catchSync from "../utils/catchSync.js";
 import * as userModel from "../models/userModel.js";
 
 
-const getBindSteamAccount = catchSync((req, res) => {
-  const selectValue = userModel.getBindSteamAccount.all();
+export const getAccount = catchSync((req, res) => {
+  const selectValue = userModel.getBindAccount.all();
   res.status(200).json({
     status: 'success',
-    message: selectValue
+    message: {
+      'accounts': selectValue
+    }
   })
 })
 
-const searchSteamAccount = catchAsync(async (req, res) => {
+export const searchAccount = catchAsync(async (req, res) => {
   const steam_id = req.query.steam_id;
 
   // 查询账号
@@ -26,7 +28,7 @@ const searchSteamAccount = catchAsync(async (req, res) => {
   });
 })
 
-const bindSteamAccount = catchSync((req, res) => {
+export const bindAccount = catchSync((req, res) => {
   const state = userModel.bindSteamAccount.run(
       req.body['steam_id'],
       req.body['account_id'].toString(),
@@ -38,9 +40,3 @@ const bindSteamAccount = catchSync((req, res) => {
     message: state
   })
 })
-
-export {
-  getBindSteamAccount,
-  searchSteamAccount,
-  bindSteamAccount,
-};

@@ -4,8 +4,8 @@
   "main": "server.js",
   "type": "module",
   "scripts": {
-    "dev": "nodemon server.js",
-    "start": "set NODE_ENV=production && nodemon server.js"
+    "server-dev": "nodemon server.js",
+    "server": "set NODE_ENV=production && nodemon server.js"
   },
   "author": "0x3a0",
   "license": "ISC",

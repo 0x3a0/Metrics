@@ -11,11 +11,14 @@ import * as inventoryModel from "./../models/inventoryModel.js";
 export const historyInventory = catchSync((req, res) => {
   const { steamId } = req.query;
   const history = inventoryModel.getInventory.all(steamId);
-  res.json(history);
+  res.status(200).json({
+    status: "success",
+    data: history,
+  });
 })
 
 /**
- * 通过 SSE 获取实时库存数据
+ * 通过 SSE 获取实时库存
  * @route GET /api/v1/inventory/realTime
  * @param {string} steamId - steam id
  * @param {timestamp} time - 时间戳

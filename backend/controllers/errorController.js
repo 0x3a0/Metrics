@@ -26,12 +26,14 @@ const sendErrorProd =  (err, res) => {
   }
 }
 
+// 处理重复字段错误
 const handleDuplicateFieldsDB = err => {
   const errField = err.message.split(":")[1].trim();
   const message = `重复提交${errField}，请使用其他${errField}值！`
   return new AppError(message, 400);
 }
 
+// 错误处理中间件
 const errorHandler = (err, req, res, next) => {
   err.status = err.status || 'error';
   err.statusCode = err.statusCode || 500;
