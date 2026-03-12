@@ -25,12 +25,11 @@ async function getAccount() {
     setTimeout(() => {
       if (resp.data['message']['accounts'].length > 0) {
         bind.value = true;
-        loading.value = false;
       } else {
         bind.value = false;
-        loading.value = false;
       }
-    }, 2500)
+      loading.value = false;
+    }, 3000)
   } catch (err) {
     console.error(err);
   }
@@ -69,7 +68,19 @@ onMounted(() => {
 
       <!-- 账户未绑定状态 -->
       <div v-if="bind == false" class="h-full flex-1 flex items-center justify-center">
-        <span class="text-base underline hover:cursor-pointer">点我绑定Steam账户</span>
+        <button class="btn btn-link text-base text-zinc-800 font-normal" onclick="bind_modal.showModal()">点我绑定Steam账户</button>
+        <dialog id="bind_modal" class="modal">
+          <div class="modal-box">
+            <h3 class="text-lg font-bold">Hello!</h3>
+            <p class="py-4">Press ESC key or click the button below to close</p>
+            <div class="modal-action">
+              <form method="dialog">
+                <!-- if there is a button in form, it will close the modal -->
+                <button class="btn">Close</button>
+              </form>
+            </div>
+          </div>
+        </dialog>
       </div>
       
     </template>
