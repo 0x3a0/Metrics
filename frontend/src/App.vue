@@ -1,103 +1,54 @@
 <script setup>
-import axios from 'axios';
 import { ref, onMounted } from 'vue';
-import SidebarLayout from '@/components/sidebars/sidebarLayout.vue';
-import SidebarContent from '@/components/sidebars/sidebarContent.vue';
-import LineCard from "@/components/cards/lineCard.vue";
-import TreemapCard from "@/components/cards/treemapCard.vue";
-import InventoryTable from '@/components/tables/inventoryTable.vue';
+import SidebarLayout from '@/components/sidebars/sidebarLayout.vue'
+import SidebarContent from '@/components/sidebars/sidebarContent.vue'
+import HeaderSection from '@/components/main/HeaderSection.vue'
+import AnalyticsCards from '@/components/main/AnalyticsCards.vue'
+import InventoryTable from '@/components/main/InventoryTable.vue'
+import SteamBindModal from '@/components/SteamBindModal.vue'
+import { getAccount } from '@/utils/api'
 
+const showBindModal = ref(false);
+const boundAccounts = ref([]);
+const isLoading = ref(true);
 
-// 库存数据
-let inventoryDatas = ref([]);
-// 时间
-const timeQuantum = ref("");
-// 账号绑定状态
-const bind = ref();
-// 加载状态，默认为 true
-const loading = ref(true);
-
-
-// 获取绑定账号
-async function getAccount() {
+onMounted(async () => {
   try {
-    const resp = await axios.get("http://localhost:9280/api/v1/user/getAccount");
-    setTimeout(() => {
-      if (resp.data['message']['accounts'].length > 0) {
-        bind.value = true;
-      } else {
-        bind.value = false;
+    const response = await getAccount();
+    if (response.status === 'success') {
+      boundAccounts.value = response.message.accounts || [];
+      if (boundAccounts.value.length === 0) {
+        showBindModal.value = true;
       }
-      loading.value = false;
-    }, 3000)
-  } catch (err) {
-    console.error(err);
+    }
+  } catch (error) {
+    console.error('获取账号信息失败:', error);
+  } finally {
+    isLoading.value = false;
   }
-}
+});
 
-// 计算当前时间
-function judgeTimeQuantum() {
-  const hour = new Date().getHours();
-  if (hour > 6 && hour < 12) {
-    timeQuantum.value = "早上好";
-  } else if  (hour >= 12 && hour < 18) {
-    timeQuantum.value = "下午好"
-  } else {
-    timeQuantum.value = "晚上好";
-  }
-}
-
-onMounted(() => {
-  getAccount();
-  judgeTimeQuantum();
-}
-)
+const handleBindSuccess = (account) => {
+  boundAccounts.value.push(account);
+  showBindModal.value = false;
+};
 </script>
 
 <template>
   <sidebar-layout>
     <template v-slot:sidebar-content>
-      <SidebarContent></SidebarContent>
+      <SidebarContent />
     </template>
-
+    
     <template v-slot:main-content>
-      <!-- 加载状态 -->
-      <div v-if="loading" class="h-full flex-1 flex items-center justify-center">
-        <div class="loading loading-ring loading-xl"></div>
-      </div>
-
-      <!-- 账户未绑定状态 -->
-      <div v-if="bind == false" class="h-full flex-1 flex items-center justify-center">
-        <button class="btn btn-link text-base text-zinc-800 font-normal" onclick="bind_modal.showModal()">点我绑定Steam账户</button>
-        <dialog id="bind_modal" class="modal">
-          <div class="modal-box">
-            <h3 class="text-lg font-bold">Hello!</h3>
-            <p class="py-4">Press ESC key or click the button below to close</p>
-            <div class="modal-action">
-              <form method="dialog">
-                <!-- if there is a button in form, it will close the modal -->
-                <button class="btn">Close</button>
-              </form>
-            </div>
-          </div>
-        </dialog>
-      </div>
-      
+      <HeaderSection />
+      <AnalyticsCards />
+      <InventoryTable />
     </template>
   </sidebar-layout>
+
+  <SteamBindModal 
+    v-if="showBindModal" 
+    @bind-success="handleBindSuccess"
+  />
 </template>
-
-<style scoped>
-/* 动画定义 */
-.slide-down-enter-active,
-.slide-down-leave-active {
-  transition: all 0.5s ease-out;
-}
-
-/* 进入前和离开后的状态：向上偏移并透明 */
-.slide-down-enter-from,
-.slide-down-leave-to {
-  opacity: 0;
-  transform: translateY(-100%);
-}
-</style>
