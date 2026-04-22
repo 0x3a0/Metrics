@@ -138,14 +138,9 @@ const handleBind = async () => {
         >
           <div class="flex items-start justify-between">
             <div class="flex items-center gap-4">
-              <div class="relative">
-                <div class="w-14 h-14 rounded-full overflow-hidden border-2 border-white shadow-sm">
-                  <img :src="account.avatar_url" :alt="account.persona_name" class="w-full h-full object-cover" />
-                </div>
-                <div class="absolute -bottom-1 -right-1 w-6 h-6 bg-emerald-500 rounded-full border-2 border-white flex items-center justify-center">
-                  <svg class="w-3 h-3 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
-                  </svg>
+              <div class="avatar online">
+                <div class="w-14 h-14 rounded-full border-2 border-white shadow-sm">
+                  <img :src="account.avatar_url" :alt="account.persona_name" />
                 </div>
               </div>
               <div class="flex-1 min-w-0">
@@ -246,14 +241,9 @@ const handleBind = async () => {
 
         <div class="bg-linear-to-br from-gray-50 to-white rounded-xl p-6 border border-gray-200">
           <div class="flex items-center gap-6">
-            <div class="relative">
-              <div class="w-20 h-20 rounded-full overflow-hidden border-4 border-white shadow-lg">
-                <img :src="`https://avatars.cdn.steamchina.queniuam.com/${searchResult.avatar_url}_full.jpg`" :alt="searchResult.persona_name" class="w-full h-full object-cover" />
-              </div>
-              <div class="absolute -bottom-2 -right-2 w-10 h-10 bg-blue-500 rounded-full border-3 border-white flex items-center justify-center shadow-md">
-                <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
-                </svg>
+            <div class="avatar">
+              <div class="w-20 h-20 rounded-full border-4 border-white shadow-lg">
+                <img :src="`https://avatars.cdn.steamchina.queniuam.com/${searchResult.avatar_url}_full.jpg`" :alt="searchResult.persona_name" />
               </div>
             </div>
             <div class="flex-1">
