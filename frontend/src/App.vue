@@ -2,9 +2,6 @@
 import { ref, onMounted } from 'vue';
 import SidebarLayout from '@/components/sidebars/sidebarLayout.vue'
 import SidebarContent from '@/components/sidebars/sidebarContent.vue'
-import HeaderSection from '@/components/main/HeaderSection.vue'
-import AnalyticsCards from '@/components/main/AnalyticsCards.vue'
-import InventoryTable from '@/components/main/InventoryTable.vue'
 import SteamBindModal from '@/components/SteamBindModal.vue'
 import { getAccount } from '@/utils/api'
 
@@ -39,16 +36,14 @@ const handleBindSuccess = (account) => {
     <template v-slot:sidebar-content>
       <SidebarContent />
     </template>
-    
+
     <template v-slot:main-content>
-      <HeaderSection />
-      <AnalyticsCards />
-      <InventoryTable />
+      <router-view />
     </template>
   </sidebar-layout>
 
-  <SteamBindModal 
-    v-if="showBindModal" 
+  <SteamBindModal
+    v-if="showBindModal"
     @bind-success="handleBindSuccess"
   />
 </template>

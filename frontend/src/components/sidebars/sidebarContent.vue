@@ -1,7 +1,7 @@
 <script setup>
-import { ref } from 'vue'
+import { useRoute } from 'vue-router'
 
-const activeMenu = ref('dashboard')
+const route = useRoute()
 
 const menuItems = [
   { id: 'dashboard', label: 'Dashboard', icon: 'M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6' },
@@ -21,15 +21,15 @@ const menuItems = [
         <span class="text-xl font-semibold text-gray-900">Metrics</span>
       </div>
     </div>
-    
-    <nav class="flex-1 p-4 space-y-1 mt-4">
-      <button 
-        v-for="item in menuItems" 
+
+    <nav class="flex-1 p-3 space-y-1 mt-2">
+      <router-link
+        v-for="item in menuItems"
         :key="item.id"
-        @click="activeMenu = item.id"
+        :to="{ name: item.id === 'dashboard' ? 'Dashboard' : 'Settings' }"
         :class="[
-          'w-full flex items-center gap-3 px-4 py-3 rounded-lg text-left transition-all duration-200 border focus:outline-none focus:border-gray-200',
-          activeMenu === item.id
+          'w-full flex items-center gap-3 px-3 py-2 rounded-lg text-left transition-all duration-200 border focus:outline-none focus:border-gray-200',
+          route.name === (item.id === 'dashboard' ? 'Dashboard' : 'Settings')
             ? 'bg-white border-gray-200 text-gray-900 font-medium shadow-2xs'
             : 'text-gray-700 border-transparent hover:bg-white hover:border-gray-200 hover:text-gray-900'
         ]"
@@ -38,7 +38,7 @@ const menuItems = [
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" :d="item.icon"/>
         </svg>
         <span>{{ item.label }}</span>
-      </button>
+      </router-link>
     </nav>
   </div>
 </template>

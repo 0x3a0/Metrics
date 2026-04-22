@@ -7,7 +7,7 @@
       <slot name="sidebar-content"></slot>
     </aside>
     
-    <main class="flex-1 overflow-auto p-8 bg-white">
+    <main class="flex-1 overflow-auto p-6 bg-white">
       <slot name="main-content"></slot>
     </main>
   </div>
