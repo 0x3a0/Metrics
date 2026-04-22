@@ -1,6 +1,7 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import DashboardPage from '@/pages/DashboardPage.vue'
 import SettingsPage from '@/pages/SettingsPage.vue'
+import AccountPage from '@/pages/AccountPage.vue'
 
 const routes = [
   {
@@ -16,6 +17,11 @@ const routes = [
     path: '/settings',
     name: 'Settings',
     component: SettingsPage
+  },
+  {
+    path: '/account',
+    name: 'Account',
+    component: AccountPage
   }
 ]
 
