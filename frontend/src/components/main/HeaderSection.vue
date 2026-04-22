@@ -45,7 +45,7 @@ const getGreeting = () => {
       <div class="group relative">
         <div class="flex items-center gap-2 cursor-pointer rounded-lg px-2 py-1.5 transition-all duration-300 bg-white border border-gray-100 hover:border-gray-300 hover:shadow-sm hover:shadow-gray-100/50">
           <div class="avatar relative">
-            <div class="w-9 h-9 rounded-full bg-gradient-to-br from-blue-50 to-gray-50 border-2 border-white shadow-sm group-hover:scale-105 transition-transform duration-300">
+            <div class="w-9 h-9 rounded-full bg-linear-to-br from-blue-50 to-gray-50 border-2 border-white shadow-sm group-hover:scale-105 transition-transform duration-300">
               <img
                 src="https://api.dicebear.com/7.x/avataaars/svg?seed=Anika"
                 alt="avatar"

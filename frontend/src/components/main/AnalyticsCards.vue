@@ -52,7 +52,7 @@ const analyticsData = ref([
         <div class="flex items-start justify-between">
           <div class="flex-1">
             <div class="flex items-center gap-3 mb-3">
-              <div class="w-9 h-9 rounded-md bg-gradient-to-br from-gray-50 to-gray-100 flex items-center justify-center group-hover:scale-105 transition-transform duration-200">
+              <div class="w-9 h-9 rounded-md bg-linear-to-br from-gray-50 to-gray-100 flex items-center justify-center group-hover:scale-105 transition-transform duration-200">
                 <svg class="w-4.5 h-4.5 text-gray-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" :d="item.icon"/>
                 </svg>

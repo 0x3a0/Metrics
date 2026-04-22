@@ -121,7 +121,7 @@ const handleBind = async () => {
       </div>
 
       <div v-else-if="boundAccounts.length === 0" class="text-center py-12">
-        <div class="w-16 h-16 mx-auto mb-4 rounded-full bg-gradient-to-br from-gray-50 to-gray-100 flex items-center justify-center">
+        <div class="w-16 h-16 mx-auto mb-4 rounded-full bg-linear-to-br from-gray-50 to-gray-100 flex items-center justify-center">
           <svg class="w-8 h-8 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
           </svg>
@@ -134,7 +134,7 @@ const handleBind = async () => {
         <div
           v-for="account in boundAccounts"
           :key="account.steam_id"
-          class="group relative bg-gradient-to-br from-white to-gray-50 rounded-lg border border-gray-100 p-5 hover:border-gray-200 transition-all duration-200 hover:shadow-xs"
+          class="group relative bg-linear-to-br from-white to-gray-50 rounded-lg border border-gray-100 p-5 hover:border-gray-200 transition-all duration-200 hover:shadow-xs"
         >
           <div class="flex items-start justify-between">
             <div class="flex items-center gap-4">
@@ -207,7 +207,7 @@ const handleBind = async () => {
 
         <button
           @click="handleSearch"
-          class="w-full py-3 px-4 bg-gradient-to-r from-gray-900 to-gray-800 hover:from-gray-800 hover:to-gray-700 text-white font-medium rounded-lg transition-all duration-200 disabled:from-gray-400 disabled:to-gray-300 disabled:cursor-not-allowed shadow-sm hover:shadow"
+          class="w-full py-3 px-4 bg-linear-to-r from-gray-900 to-gray-800 hover:from-gray-800 hover:to-gray-700 text-white font-medium rounded-lg transition-all duration-200 disabled:from-gray-400 disabled:to-gray-300 disabled:cursor-not-allowed shadow-sm hover:shadow"
           :disabled="isSearching || isBinding || !steamId.trim()"
         >
           <span v-if="isSearching" class="inline-flex items-center justify-center">
@@ -235,7 +235,7 @@ const handleBind = async () => {
 
       <div v-if="searchResult" class="space-y-6">
         <div class="text-center mb-6">
-          <div class="inline-flex items-center justify-center w-16 h-16 rounded-full bg-gradient-to-br from-blue-50 to-blue-100 mb-4">
+          <div class="inline-flex items-center justify-center w-16 h-16 rounded-full bg-linear-to-br from-blue-50 to-blue-100 mb-4">
             <svg class="w-8 h-8 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
             </svg>
@@ -244,7 +244,7 @@ const handleBind = async () => {
           <p class="text-sm text-gray-500 mt-1">请确认以下账户信息是否正确</p>
         </div>
 
-        <div class="bg-gradient-to-br from-gray-50 to-white rounded-xl p-6 border border-gray-200">
+        <div class="bg-linear-to-br from-gray-50 to-white rounded-xl p-6 border border-gray-200">
           <div class="flex items-center gap-6">
             <div class="relative">
               <div class="w-20 h-20 rounded-full overflow-hidden border-4 border-white shadow-lg">
@@ -277,7 +277,7 @@ const handleBind = async () => {
         <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
           <button
             @click="handleBind"
-            class="py-3 px-4 bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white font-medium rounded-lg transition-all duration-200 disabled:from-blue-300 disabled:to-blue-200 disabled:cursor-not-allowed shadow-sm hover:shadow"
+            class="py-3 px-4 bg-linear-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white font-medium rounded-lg transition-all duration-200 disabled:from-blue-300 disabled:to-blue-200 disabled:cursor-not-allowed shadow-sm hover:shadow"
             :disabled="isBinding"
           >
             <span v-if="isBinding" class="inline-flex items-center justify-center">
