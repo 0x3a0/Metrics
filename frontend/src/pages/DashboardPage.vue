@@ -5,7 +5,9 @@ import InventoryTable from '@/components/main/InventoryTable.vue'
 </script>
 
 <template>
-  <HeaderSection />
-  <AnalyticsCards />
-  <InventoryTable />
+  <div class="space-y-5">
+    <HeaderSection />
+    <AnalyticsCards />
+    <InventoryTable />
+  </div>
 </template>
