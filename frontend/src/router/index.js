@@ -19,10 +19,10 @@ const routes = [
     component: SettingsPage
   },
   {
-    path: '/account',
-    name: 'Account',
+    path: '/accounts',
+    name: 'Accounts',
     component: AccountPage
-  }
+  },
 ]
 
 const router = createRouter({
