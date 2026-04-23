@@ -9,18 +9,46 @@ const api = axios.create({
 });
 
 export const getAccount = async () => {
-  const response = await api.get('/user/getAccount');
-  return response.data;
+  try {
+    const response = await api.get('/user/getAccount');
+    return response.data;
+  } catch (error) {
+    // 如果后端返回了错误响应，返回错误数据
+    if (error.response && error.response.data) {
+      return error.response.data;
+    }
+    // 其他错误（网络错误等）重新抛出
+    throw error;
+  }
 };
 
 export const searchAccount = async (steamId) => {
-  const response = await api.get('/user/searchAccount', {
-    params: { steam_id: steamId }
-  });
-  return response.data;
+  try {
+    const response = await api.get('/user/searchAccount', {
+      params: { steam_id: steamId }
+    });
+    console.log(response);
+    return response.data;
+  } catch (error) {
+    // 如果后端返回了错误响应，返回错误数据
+    if (error.response && error.response.data) {
+      return error.response.data;
+    }
+    // 其他错误（网络错误等）重新抛出
+    throw error;
+  }
 };
 
 export const bindAccount = async (accountData) => {
-  const response = await api.post('/user/bindAccount', accountData);
-  return response.data;
+  try {
+    const response = await api.post('/user/bindAccount', accountData);
+    return response.data;
+  } catch (error) {
+    // 如果后端返回了错误响应（如400），返回错误数据
+    if (error.response && error.response.data) {
+      return error.response.data;
+    }
+    // 其他错误（网络错误等）重新抛出
+    throw error;
+  }
 };
