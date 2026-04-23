@@ -6,5 +6,6 @@
 }
 
 @plugin "daisyui" {
-  themes: all;
+  themes: light --default, dark --prefersdark;
+  logs: false;
 }
