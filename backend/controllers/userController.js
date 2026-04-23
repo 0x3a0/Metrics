@@ -29,14 +29,41 @@ export const searchAccount = catchAsync(async (req, res) => {
 })
 
 export const bindAccount = catchSync((req, res) => {
-  const state = userModel.bindSteamAccount.run(
-      req.body['steam_id'],
-      req.body['account_id'].toString(),
-      req.body['persona_name'],
-      req.body['avatar_url']
-  )
-  res.status(200).json({
-    status: "success",
-    message: state
-  })
+  const { steam_id, account_id, persona_name, avatar_url } = req.body;
+  
+  // 检查账号是否已存在
+  const checkResult = userModel.checkAccountExists.get(steam_id);
+  if (checkResult && checkResult.count > 0) {
+    return res.status(400).json({
+      status: "error",
+      message: "账号已绑定",
+      code: "ACCOUNT_ALREADY_BOUND"
+    });
+  }
+  
+  try {
+    // 绑定账号
+    const state = userModel.bindSteamAccount.run(
+      steam_id,
+      account_id.toString(),
+      persona_name,
+      avatar_url
+    );
+    
+    res.status(200).json({
+      status: "success",
+      message: state
+    });
+  } catch (error) {
+    // 捕获数据库唯一性约束错误（处理竞争条件）
+    if (error.message && error.message.includes('UNIQUE constraint failed')) {
+      return res.status(400).json({
+        status: "error",
+        message: "账号已绑定",
+        code: "ACCOUNT_ALREADY_BOUND"
+      });
+    }
+    // 其他错误重新抛出，由catchSync处理
+    throw error;
+  }
 })
