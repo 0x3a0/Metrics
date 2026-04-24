@@ -10,4 +10,8 @@ export const checkAccountExists = database.prepare(`
 export const bindSteamAccount = database.prepare(`
     INSERT INTO users(steam_id, account_id, persona_name, avatar_url)
     VALUES (?, ?, ?, ?)
-`)
+`);
+
+export const deleteBindAccount = database.prepare(`
+    DELETE FROM users WHERE steam_id = ?
+`);

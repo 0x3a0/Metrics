@@ -53,6 +53,20 @@ export const bindAccount = async (accountData) => {
   }
 };
 
+export const deleteAccount = async (steamId) => {
+  try {
+    const response = await api.post('/user/deleteAccount', { steam_id: steamId });
+    return response.data;
+  } catch (error) {
+    // 如果后端返回了错误响应（如404），返回错误数据
+    if (error.response && error.response.data) {
+      return error.response.data;
+    }
+    // 其他错误（网络错误等）重新抛出
+    throw error;
+  }
+};
+
 export const getInventoryHistory = async (steamId) => {
   try {
     const response = await api.get('/inventory/history', {

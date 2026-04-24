@@ -67,3 +67,25 @@ export const bindAccount = catchSync((req, res) => {
     throw error;
   }
 })
+
+export const deleteAccount = catchSync((req, res) => {
+  const { steam_id } = req.body;
+
+  // 检查账号是否存在
+  const checkResult = userModel.checkAccountExists.get(steam_id);
+  if (!checkResult || checkResult.count === 0) {
+    return res.status(404).json({
+      status: "error",
+      message: "账号不存在",
+      code: "ACCOUNT_NOT_FOUND"
+    });
+  }
+
+  // 执行删除
+  userModel.deleteBindAccount.run(steam_id);
+
+  res.status(200).json({
+    status: "success",
+    message: "账号已成功解绑"
+  });
+})
