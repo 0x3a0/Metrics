@@ -1,217 +1,138 @@
 # CODEBUDDY.md
 
-This file provides guidance to CodeBuddy Code when working with code in this repository.
+本文件用于约束 CodeBuddy Code 在本仓库中的工作方式。
 
-## Project Overview
+## 项目概览
 
-Metrics 是一个 CS 饰品追踪全栈应用：用户提供 SteamID，系统同步库存数据，获取多平台（Buff163、c5game 等）在售价格，提供分析报表。
+Metrics 是一个 CS 饰品数据看板项目：
 
-## Coding Rules
+- 前端负责账号绑定、Dashboard 和 Settings 页面
+- 后端负责账户数据写入与 API 提供
+- Crawler 定时抓取库存与价格数据
+- 数据统一落在共享 SQLite：`data/userVal.db`
 
-- 遵守 Vue 3 组件设计规范，每个组件只负责一个功能模块
-- 前端样式使用 TailwindCSS，优先使用 DaisyUI 组件
-- 无全局状态管理（无 Pinia/Vuex），状态在组件内部用 Composition API 管理
-- 前端路径别名: `@` → `./src`
-- 编写代码时包含简易的注释
+本仓库不是 workspace monorepo。`backend`、`frontend`、`crawler` 都有独立 `package.json`，依赖需要分别安装。
 
-## 前端样式风格规范
+## 技术栈
 
-### 🎯 核心风格
-现代企业后台风格（Modern Admin UI），强调：
-- 简洁克制（Minimal & Clean）
-- 专业理性（Professional）
-- 数据优先（Data-first）
-- 低视觉干扰（Low Noise）
-- 以灰阶为基础、白底为主、状态色点缀的轻量级后台 UI 风格
+- Frontend: Vue 3 + Composition API + Vite 7 + Vue Router 4 + Axios + TailwindCSS 4 + DaisyUI 5
+- Backend: Express 5 + better-sqlite3 + Axios + Morgan
+- Crawler: Node.js + cron + Axios + winston + `node:sqlite`
+- Database: `data/userVal.db`
+- 所有子项目均使用 ES Modules
 
-### 🎨 色彩规范（Color Style）
+## 目录速览
 
-#### 基础色
-- 主背景：白色（#FFFFFF）
-- 页面背景：极浅灰（#F9FAFB / #F3F4F6）
-- 边框：浅灰（#E5E7EB / #F1F5F9）
+- `backend/`: Express API 与 SQLite 访问
+- `frontend/`: Vue SPA
+- `crawler/`: 定时抓取任务
+- `data/`: 共享 SQLite 数据库
 
-#### 文本颜色
-- 主文本：深灰（#111827）
-- 次文本：中灰（#6B7280）
-- 辅助文本：浅灰（#9CA3AF）
+前端关键位置：
 
-#### 状态色（仅用于语义表达）
-- 成功：绿色（emerald）
-- 警告：黄色（amber）
-- 错误：红色（rose）
-- 提示信息：蓝色（skyblue）
+- 页面：`frontend/src/pages`
+- 组件：`frontend/src/components`
+- API 封装：`frontend/src/utils/api.js`
+- 全局主题与插件：`frontend/src/style.css`
+- 路由：`/dashboard`、`/accounts`、`/settings`
 
-约束：
-- 不使用大面积高饱和颜色
-- 不使用装饰性渐变
-- 色彩以“灰阶 + 少量语义色”为主
+## 通用工作规则
 
-### 🔤 字体与层级（Typography）
+- 优先做小而准的改动，贴合现有架构。
+- 前端状态默认保留在组件内，使用 Composition API 管理。
+- 前端导入别名为 `@ -> frontend/src`。
+- 注释只在必要处补充，不写解释性废话。
+- 不新增与现有栈重复的 UI 框架、样式框架或状态库。
 
-- 使用清晰、现代的无衬线字体
-- 通过“字号 + 粗细 + 颜色灰度”建立层级
+## 前端强制规范
 
-层级原则：
-- 重要信息：更大、更粗、更深色
-- 次要信息：中等字号、中灰
-- 辅助信息：小字号、浅灰
+Agent 编写或修改前端时，默认且必须使用：
 
-约束：
-- 不依赖颜色强调层级
-- 不使用花哨字体或装饰字体
+- TailwindCSS：负责布局、间距、响应式与细节控制
+- DaisyUI：负责按钮、表单、卡片、弹窗、表格、告警等语义组件
 
-### 🔲 形状与视觉语言（Visual Language）
+必须遵守：
 
-- 使用统一的小到中等圆角（rounded）
-- 边框细且低对比
-- 阴影非常轻（仅用于层级区分）
+- 优先使用 DaisyUI 组件与模式：`btn`、`card`、`table`、`input`、`select`、`modal`、`alert`、`badge`、`loading`、`dropdown`、`tabs`、`stats`、`menu`、`navbar`
+- 用 Tailwind 负责页面骨架、网格、间距、对齐、尺寸和响应式
+- DaisyUI 能解决的，不要退回大段自定义 CSS
+- 不要引入 Element Plus、Ant Design、Vuetify、Bootstrap 等其他 UI 库
+- 非必要不要引入 Sass、Less 等额外样式层
+- DaisyUI 不够时，先用 Tailwind 扩展，再考虑在 `frontend/src/style.css` 增加少量共享样式
+- 字体和主题优先复用 `frontend/src/style.css` 里的现有设置
 
-整体风格：
-- 扁平化（Flat）
-- 轻质感（Soft UI）
-- 无强装饰
+## 前端设计风格
 
-约束：
-- 不使用重阴影
-- 不使用玻璃拟态（Glassmorphism）
-- 不使用强渐变或发光效果
+目标风格：
 
-### ⚡ 交互反馈（Interaction Style）
+- 现代后台
+- 克制、专业、低噪音
+- 数据优先
+- 桌面端信息密度优先，同时保证移动端可用
 
-- 所有交互反馈必须轻量、克制
-- 使用短时长过渡（150~250ms）
+视觉规则：
 
-常见反馈：
-- hover：轻微背景或边框变化
-- focus：低对比高亮
-- active：细微变化
+- 以浅色主题和灰阶为主
+- 语义色只用于状态、告警和强调
+- 避免高饱和、炫光、强渐变
+- 使用小到中等圆角、细边框、轻阴影
+- 多用卡片、表格、统计块、筛选区、结构化面板
+- 层级主要靠字号、字重、留白，不靠大量颜色
+- 字体优先沿用当前主题中的 `Roboto` 与 `Open Sans`
 
-约束：
-- 不使用复杂动画
-- 不制造视觉干扰
-- 动效必须服务于可读性
+交互规则：
 
-### 🧠 风格原则（Design Principles）
+- 过渡尽量控制在 150ms 到 250ms
+- `hover`、`focus`、`active` 需要明确，但不要夸张
+- 动效服务于可读性，不做装饰性炫技
+- `loading`、`empty`、`error` 状态优先使用 DaisyUI 风格，并保持全站一致
 
-Agent 在生成 UI 时必须遵守：
+禁止项：
 
-1. **克制优先**
-   - 所有视觉表达应尽量减少干扰
+- 把营销页风格塞进后台主界面
+- 玻璃拟态、重阴影、重模糊、强 3D
+- 与数据争抢注意力的大装饰插画
+- 页面之间随机换配色
+- 过多自定义动画
+- 同一功能中混用 DaisyUI 与另一套组件库
 
-2. **一致性优先**
-   - 圆角、边框、颜色、字体必须统一
+## 关键业务流
 
-3. **可读性优先**
-   - 信息必须清晰、易扫描
+1. 用户在 Accounts 页面绑定 Steam 账号
+2. Backend 将账号写入 `users`
+3. Crawler 定时抓取库存和价格
+4. Backend 提供 `/api/v1/user/*` 与 `/api/v1/inventory/*`
+5. Dashboard 读取历史数据，并通过 SSE 接收实时更新
 
-4. **语义明确**
-   - 颜色仅用于表达状态或意义
+## 常用命令
 
-5. **功能导向**
-   - UI 为信息服务，而不是装饰
-
-### ❌ 禁止事项（Anti-pattern）
-
-- ❌ 大面积高饱和配色
-- ❌ 渐变主导的设计
-- ❌ 重阴影 / 强立体感
-- ❌ 花哨动效
-- ❌ 不统一的圆角/边框/字体
-- ❌ 装饰性元素过多
-
-### ✅ 最终约束
-
-- 所有 UI 必须看起来像一个“干净、克制、专业的数据后台系统”，而不是营销页面或娱乐产品。
-  
-## Tech Stack
-
-- **Frontend**: Vue 3 (Composition API + `<script setup>`) + Vite 7 + TailwindCSS 4 + DaisyUI 5 + Vue Router 4 + Axios
-- **Backend**: Express.js 5 + better-sqlite3 + Axios + Morgan
-- **Crawler**: Node.js + Axios + cron + winston + node:sqlite (DatabaseSync)
-- **Database**: 共享 SQLite (`data/userVal.db`)
-- **所有子项目均使用 ES Modules** (`"type": "module"`)
-
-## Common Commands
+需要在哪个子项目工作，就进入哪个目录单独安装依赖。
 
 ```bash
-# 安装依赖（需在根目录、backend、frontend、crawler 各自执行）
+# root
+npm run backend
+npm run frontend
+
+# backend
+cd backend
 npm install
+npm run server-dev
 
-# 开发模式
-npm run backend              # 根目录启动后端 (port 9280)
-npm run frontend             # 根目录启动前端 (Vite dev server)
-cd backend && npm run server-dev   # 后端 nodemon 模式
-cd frontend && npm run dev         # 前端 Vite 开发服务器
-cd crawler && npm start            # 启动爬虫 (cron 定时任务)
+# frontend
+cd frontend
+npm install
+npm run dev
+npm run build
 
-# 构建
-cd frontend && npm run build    # 生产构建
-cd frontend && npm run preview  # 预览生产构建
+# crawler
+cd crawler
+npm install
+npm start
 ```
 
-无测试套件，无 linting 配置。
+## 环境说明
 
-## Architecture
-
-三个独立子项目，各自有 package.json，非 workspace monorepo，依赖需分别安装。
-
-```
-backend/          Express API 服务
-  app.js          Express 应用配置（CORS、JSON 解析、Morgan 日志）
-  server.js       服务入口
-  database.js     SQLite 连接 + users 表初始化
-  controllers/    请求处理（inventoryController, userController, errorController）
-  models/         prepared statement 数据库查询
-  routers/        路由定义 (/api/v1/inventory, /api/v1/user)
-  utils/          appError, catchAsync, catchSync
-
-frontend/         Vue 3 SPA
-  src/pages/          页面组件 (DashboardPage, AccountPage, SettingsPage)
-  src/components/main/    Dashboard 组件 (HeaderSection, AnalyticsCards, InventoryTable)
-  src/components/sidebars/  侧边栏 (sidebarLayout, sidebarContent)
-  src/utils/          api.js (Axios 封装), debounce.js, sleep.js
-  src/router/         路由配置 (/ → /dashboard, /account, /settings)
-
-crawler/          定时爬虫服务
-  start.js            CronJob 调度入口
-  database.js         SQLite 连接 + inventory/inventory_item_price 表初始化
-  model.js            prepared statement 数据库查询
-  crawls/inventory.js       Steam 库存爬取
-  crawls/inventoryPrice.js  C5Game 价格爬取
-
-data/             共享 SQLite 数据库文件 (userVal.db)
-```
-
-### Data Flow
-
-1. 用户通过前端绑定 Steam 账号 → 写入 `users` 表
-2. Crawler 每 5 秒检查绑定账号 (`checkAccountJob`)
-3. 发现账号后：库存爬取（每 30 分钟）+ 价格爬取（每 5 分钟）
-4. 前端通过 SSE 端点 (`/api/v1/inventory/realTime`) 获取实时更新
-5. Dashboard 通过 `/api/v1/inventory/history` 展示历史数据
-
-### Database Schema
-
-SQLite 位于 `data/userVal.db`，三个表分别由 backend 和 crawler 初始化：
-
-- **users** (backend/database.js): steam_id, account_id, persona_name, avatar_url
-- **inventory** (crawler/database.js): appid, classid, instanceid, name, market_hash_name, steam_id, crawl_time 等
-- **inventory_item_price** (crawler/database.js): classid, instanceid, name, sell_price, sell_count, price_source, steam_id, crawl_time 等
-
-**重要**: Backend 使用 `better-sqlite3`，Crawler 使用 `node:sqlite` 的 `DatabaseSync`，两者访问同一个 SQLite 文件但驱动不同。
-
-### API Endpoints
-
-| Method | Path | Description |
-|--------|------|-------------|
-| GET | `/api/v1/user/getAccount` | 获取已绑定账号 |
-| GET | `/api/v1/user/searchAccount?steam_id=xxx` | 搜索 Steam 账号 |
-| POST | `/api/v1/user/bindAccount` | 绑定 Steam 账号 |
-| GET | `/api/v1/inventory/history?steamId=xxx` | 历史库存数据 |
-| GET | `/api/v1/inventory/realTime?steamId=xxx` | SSE 实时库存推送 |
-
-## Environment Variables
-
-**Backend** (`backend/.env`): `PORT=9280`, `NODE_ENV=development`
-**Crawler** (`crawler/.env`): `C5GAME_APP_KEY` (C5Game API 密钥)
+- Backend 默认端口：`9280`
+- Backend 环境文件：`backend/.env`
+- Crawler 环境文件：`crawler/.env`
+- Crawler 必需密钥：`C5GAME_APP_KEY`
