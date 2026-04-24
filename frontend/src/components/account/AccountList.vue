@@ -19,9 +19,18 @@ const showDeleteDialog = ref(false);
 const deletingAccount = ref(null);
 const isDeleting = ref(false);
 const deleteError = ref('');
+const isRotating = ref(false);
 
 const handleReload = () => {
-  emit('reload')
+  if (isRotating.value) return;
+  
+  isRotating.value = true;
+  emit('reload');
+  
+  // 旋转动画持续600ms
+  setTimeout(() => {
+    isRotating.value = false;
+  }, 600);
 }
 
 const closeModal = () => {
@@ -152,8 +161,12 @@ const handleConfirmDelete = async () => {
           <div class="text-sm text-gray-600">
             共 <span class="font-medium">{{ accounts.length }}</span> 个账户
           </div>
-          <button @click="handleReload" class="btn btn-ghost btn-sm btn-square text-gray-400 hover:text-gray-600">
-            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <button 
+            @click="handleReload" 
+            class="btn btn-ghost btn-sm btn-square text-gray-400 hover:text-gray-600 hover:bg-gray-50"
+            :disabled="isRotating"
+          >
+            <svg :class="{ 'rotate-once': isRotating }" class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
             </svg>
           </button>
@@ -231,3 +244,18 @@ const handleConfirmDelete = async () => {
     </dialog>
   </div>
 </template>
+
+<style scoped>
+.rotate-once {
+  animation: rotate 0.6s ease-in-out;
+}
+
+@keyframes rotate {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+</style>
