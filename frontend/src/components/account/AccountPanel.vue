@@ -2,6 +2,7 @@
 import { ref, onMounted } from 'vue';
 import { getAccount, searchAccount, bindAccount } from '@/utils/api';
 import AlertMessage from '../AlertMessage.vue';
+import ToastMessage from '../ToastMessage.vue';
 import AccountList from './AccountList.vue';
 import AccountSearchForm from './AccountSearchForm.vue';
 
@@ -116,10 +117,6 @@ const handleBind = async () => {
       errorMessage.value = '';
       errorType.value = 'success';
       currentStep.value = 1;
-
-      setTimeout(() => {
-        successMessage.value = '';
-      }, 3000);
     } else if (response.status === 'error') {
       // 处理特定错误类型
       if (response.code === 'ACCOUNT_ALREADY_BOUND') {
@@ -156,8 +153,13 @@ const handleClearError = () => {
 
 <template>
   <div class="space-y-6">
-    <!-- 成功消息 -->
-    <AlertMessage v-if="successMessage" type="success" :message="successMessage" />
+    <!-- 成功提示 Toast -->
+    <ToastMessage
+      v-if="successMessage"
+      type="success"
+      message="账号绑定成功！"
+      @close="successMessage = ''"
+    />
 
     <!-- 已绑定的Steam账户 -->
     <AccountList
