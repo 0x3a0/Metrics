@@ -52,3 +52,17 @@ export const bindAccount = async (accountData) => {
     throw error;
   }
 };
+
+export const getInventoryHistory = async (steamId) => {
+  try {
+    const response = await api.get('/inventory/history', {
+      params: { steamId }
+    });
+    return response.data;
+  } catch (error) {
+    if (error.response && error.response.data) {
+      return error.response.data;
+    }
+    throw error;
+  }
+};

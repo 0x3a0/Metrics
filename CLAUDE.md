@@ -9,7 +9,7 @@ Metrics 是一个 CS 饰品追踪全栈应用：用户提供 SteamID，系统同
 ## Coding Rules
 
 - 遵守 Vue 3 组件设计规范，每个组件只负责一个功能模块
-- 前端样式使用 TailwindCSS，优先使用 DaisyUI 组件
+- 前端样式必须使用 TailwindCSS，优先使用 DaisyUI 组件
 - 无全局状态管理（无 Pinia/Vuex），状态在组件内部用 Composition API 管理
 - 前端路径别名: `@` → `./src`
 - 编写代码时包含简易的注释
@@ -181,6 +181,15 @@ crawler/          定时爬虫服务
 
 data/             共享 SQLite 数据库文件 (userVal.db)
 ```
+
+### 前端关键逻辑
+
+**Dashboard 账号检查** (`frontend/src/pages/DashboardPage.vue`):
+- 页面 onMounted 时调用 `getAccount()` 检查绑定状态
+- 未绑定时弹出**不可关闭的 modal**（无 X 按钮/ESC/点击遮罩关闭），引导用户前往 Accounts 页面绑定
+- 绑定后返回 Dashboard，onMounted 重新执行检测通过，modal 不再出现
+- HeaderSection 通过 `:account` prop 接收账号数据，动态显示 persona_name 和 avatar_url
+- 未绑定时 HeaderSection 显示默认占位头像和"未绑定账号"
 
 ### Data Flow
 
