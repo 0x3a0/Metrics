@@ -55,9 +55,6 @@ Agent 编写或修改前端时，默认且必须使用：
 
 - 优先使用 DaisyUI 组件与模式：`btn`、`card`、`table`、`input`、`select`、`modal`、`alert`、`badge`、`loading`、`dropdown`、`tabs`、`stats`、`menu`、`navbar`
 - 用 Tailwind 负责页面骨架、网格、间距、对齐、尺寸和响应式
-- DaisyUI 能解决的，不要退回大段自定义 CSS
-- 不要引入 Element Plus、Ant Design、Vuetify、Bootstrap 等其他 UI 库
-- 非必要不要引入 Sass、Less 等额外样式层
 - DaisyUI 不够时，先用 Tailwind 扩展，再考虑在 `frontend/src/style.css` 增加少量共享样式
 - 字体和主题优先复用 `frontend/src/style.css` 里的现有设置
 
