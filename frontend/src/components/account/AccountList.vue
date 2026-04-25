@@ -77,19 +77,19 @@ const handleConfirmDelete = async () => {
 </script>
 
 <template>
-  <div class="card group relative bg-white rounded-xl border border-gray-100 p-5 hover:border-gray-200 transition-all duration-200 hover:shadow-xs">
+  <div class="card group relative bg-white rounded-xl border border-gray-100 p-5 hover:border-gray-200 transition-all duration-200 hover:shadow-xs h-[480px] flex flex-col">
     <!-- 头部 -->
     <div class="mb-6">
       <h2 class="text-xl font-semibold text-gray-900 tracking-tight">已绑定的账户</h2>
       <p class="text-sm text-gray-500 mt-1">您当前绑定的Steam账户</p>
     </div>
 
-    <div v-if="isLoading" class="flex justify-center py-12">
+    <div v-if="isLoading" class="flex justify-center items-center flex-1">
       <span class="loading loading-spinner loading-md text-gray-600"></span>
     </div>
 
-    <div v-else-if="accounts.length === 0" class="text-center py-12 border-t border-gray-50">
-      <div class="w-16 h-16 mx-auto mb-4 rounded-full bg-gray-50 flex items-center justify-center">
+    <div v-else-if="accounts.length === 0" class="text-center flex flex-col justify-center items-center flex-1">
+      <div class="w-16 h-16 mb-4 rounded-full bg-gray-50 flex items-center justify-center">
         <svg class="w-8 h-8 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
         </svg>
@@ -98,8 +98,8 @@ const handleConfirmDelete = async () => {
       <p class="text-sm text-gray-400">请在下方绑定您的Steam账户</p>
     </div>
 
-    <div v-else>
-      <div class="overflow-x-auto">
+    <div v-else class="flex flex-col flex-1 min-h-0">
+      <div class="overflow-y-auto overflow-x-auto flex-1 min-h-0">
         <table class="table w-full">
           <thead>
             <tr class="border-b border-gray-100">
@@ -156,7 +156,7 @@ const handleConfirmDelete = async () => {
         </table>
       </div>
 
-      <div class="border-t border-gray-100 px-4 py-3">
+      <div class="border-t border-gray-100 px-4 py-3 shrink-0">
         <div class="flex items-center justify-between">
           <div class="text-sm text-gray-600">
             共 <span class="font-medium">{{ accounts.length }}</span> 个账户
