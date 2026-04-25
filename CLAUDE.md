@@ -1,135 +1,57 @@
 # CLAUDE.md
 
-本文件用于约束 Claude Code 在本仓库中的工作方式。
+本文件用于约束 Claude Code 在本仓库中的工作方式
 
 ## 项目概览
 
-Metrics 是一个 CS 饰品数据看板项目：
-
-- 前端负责账号绑定、Dashboard 和 Settings 页面
-- 后端负责账户数据写入与 API 提供
-- Crawler 定时抓取库存与价格数据
-- 数据统一落在共享 SQLite：`data/userVal.db`
-
-本仓库不是 workspace monorepo。`backend`、`frontend`、`crawler` 都有独立 `package.json`，依赖需要分别安装。
-
-## 技术栈
-
-- Frontend: Vue 3 + Composition API + Vite 7 + Vue Router 4 + Axios + TailwindCSS 4 + DaisyUI 5
-- Backend: Express 5 + better-sqlite3 + Axios + Morgan
-- Crawler: Node.js + cron + Axios + winston + `node:sqlite`
-- Database: `data/userVal.db`
-- 所有子项目均使用 ES Modules
-
-## 目录速览
-
-- `backend/`: Express API 与 SQLite 访问
-- `frontend/`: Vue SPA
-- `crawler/`: 定时抓取任务
-- `data/`: 共享 SQLite 数据库
-
-前端关键位置：
-
-- 页面：`frontend/src/pages`
-- 组件：`frontend/src/components`
-- API 封装：`frontend/src/utils/api.js`
-- 全局主题与插件：`frontend/src/style.css`
-- 路由：`/dashboard`、`/accounts`、`/settings`
+Metrics 是一个 CS 饰品数据看板项目，会自动爬取 Steam 等平台的饰品数据
 
 ## 通用工作规则
 
-- 优先做小而准的改动，贴合现有架构。
-- 前端状态默认保留在组件内，使用 Composition API 管理。
-- 前端导入别名为 `@ -> frontend/src`。
-- 注释只在必要处补充，不写解释性废话。
-- 不新增与现有栈重复的 UI 框架、样式框架或状态库。
+- 前端状态默认保留在组件内，使用 Composition API 管理
+- 优先使用Tailwindcss和DaisyUI
+- 前端导入别名为 `@ -> frontend/src`
+- 注释只在必要处补充，不写解释性废话
 
-## 前端强制规范
+## 编码前思考
 
-Agent 编写或修改前端时，默认且必须使用：
+**不要进行假设，不要隐藏困惑**
 
-- TailwindCSS：负责布局、间距、响应式与细节控制
-- DaisyUI：负责按钮、表单、卡片、弹窗、表格、告警等语义组件
+- 遇到不确定的问题，请询问
+- 如果存在多种解释，请呈现它们，不要默默选择其中一种
+- 存在更简单的方法请说出来。在适当的时候提出反对意见
+- 如果有不清楚的事情，就停下来，指出令人困惑的地方
 
-必须遵守：
+## 优先考虑简洁性
 
-- 优先使用 DaisyUI 组件与模式：`btn`、`card`、`table`、`input`、`select`、`modal`、`alert`、`badge`、`loading`、`dropdown`、`tabs`、`stats`、`menu`、`navbar`
-- 用 Tailwind 负责页面骨架、网格、间距、对齐、尺寸和响应式
-- DaisyUI 不够时，先用 Tailwind 扩展，再考虑在 `frontend/src/style.css` 增加少量共享样式
-- 字体和主题优先复用 `frontend/src/style.css` 里的现有设置
+**使用最少的代码解决实际问题，不要有推测性或假设性的内容**
 
-## 前端设计风格
+- 不要超出所要求的功能范围
+- 如果写了200行代码然而实际上只需要50行，那就重写它
+- 询问自己：“一个高级工程师会觉得当前实现过于复杂吗？”如果是，那就简化实现
 
-目标风格：
+## 精确的修改
 
-- 现代后台
-- 克制、专业、低噪音
-- 数据优先
-- 桌面端信息密度优先，同时保证移动端可用
+**只修改必须修改的部分**
 
-视觉规则：
+在编辑现有代码时：
 
-- 以浅色主题和灰阶为主
-- 语义色只用于状态、告警和强调
-- 避免高饱和、炫光、强渐变
-- 使用小到中等圆角、细边框、轻阴影
-- 多用卡片、表格、统计块、筛选区、结构化面板
-- 层级主要靠字号、字重、留白，不靠大量颜色
-- 字体优先沿用当前主题中的 `Roboto` 与 `Open Sans`
+- 不要修改相邻的代码、注释或格式
+- 不要重构那些没有问题的地方
+- 如果你发现无关的废弃代码，请提及它，不要直接删除它
+- 匹配现有的代码风格和规范
 
-交互规则：
+当你的修改产生废弃代码时：
 
-- 过渡尽量控制在 150ms 到 250ms
-- `hover`、`focus`、`active` 需要明确，但不要夸张
-- 动效服务于可读性，不做装饰性炫技
-- `loading`、`empty`、`error` 状态优先使用 DaisyUI 风格，并保持全站一致
+- 移除修改后未使用的代码
 
-禁止项：
+## 目标驱动执行
 
-- 把营销页风格塞进后台主界面
-- 玻璃拟态、重阴影、重模糊、强 3D
-- 与数据争抢注意力的大装饰插画
-- 页面之间随机换配色
-- 过多自定义动画
-- 同一功能中混用 DaisyUI 与另一套组件库
+**定义成功标准，循环直到验证通过**
 
-## 关键业务流
+将任务转化为可验证的目标：
 
-1. 用户在 Accounts 页面绑定 Steam 账号
-2. Backend 将账号写入 `users`
-3. Crawler 定时抓取库存和价格
-4. Backend 提供 `/api/v1/user/*` 与 `/api/v1/inventory/*`
-5. Dashboard 读取历史数据，并通过 SSE 接收实时更新
+- 修复错误：编写一个可以复现错误的测试，然后修复问题直到测试通过
+- 重构代码：确保重构前后测试都能通过
 
-## 常用命令
-
-需要在哪个子项目工作，就进入哪个目录单独安装依赖。
-
-```bash
-# root
-npm run backend
-npm run frontend
-
-# backend
-cd backend
-npm install
-npm run server-dev
-
-# frontend
-cd frontend
-npm install
-npm run dev
-npm run build
-
-# crawler
-cd crawler
-npm install
-npm start
-```
-
-## 环境说明
-
-- Backend 默认端口：`9280`
-- Backend 环境文件：`backend/.env`
-- Crawler 环境文件：`crawler/.env`
-- Crawler 必需密钥：`C5GAME_APP_KEY`
+对于多步骤任务，请调用 plan 模式生成计划
