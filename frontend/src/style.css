@@ -3,6 +3,12 @@
 @theme {
   --font-roboto: "Roboto", "sans-serif";
   --font-open-sans: "Open Sans", "sans-serif";
+  --animate-rotate-once: rotate 0.6s ease-in-out;
+}
+
+@keyframes rotate {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
 }
 
 @plugin "daisyui" {
