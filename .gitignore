@@ -7,6 +7,6 @@ node_modules
 .gitignore
 
 .codebuddy
-.CODEBUDDY.md
+CODEBUDDY.md
 
 frontend/dist
