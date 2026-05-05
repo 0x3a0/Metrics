@@ -1,11 +1,17 @@
 # CLAUDE.md
 
-本文件用于约束 Claude Code 在本仓库中的工作方式
+本文件定义了项目的技术栈、编码规范与工作原则，开发时请严格遵守
 
-## 通用工作规则
+## 技术栈
 
-- 前端状态默认保留在组件内，使用 Composition API 管理
-- 优先使用Tailwindcss和DaisyUI
+- 后端：FastAPI + Sqlite，使用 uv 管理和运行，启动项目时使用 `uv run` 命令
+- 前端：Vue + JavaScript，使用 Node.js 运行时
+- 后端路径: `/backend`
+- 前端路径: `/frontend`
+
+## 编码规则
+
+- 前端优先使用Tailwindcss和DaisyUI
 - 前端导入别名为 `@ -> frontend/src`
 - 注释只在必要处补充，不写解释性废话
 
