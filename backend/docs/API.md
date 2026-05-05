@@ -4,7 +4,7 @@
 
 本文档描述了 Metrics 后端服务提供的所有 API 接口。
 
-**基础URL**: `http://localhost:3000/api/v1`
+**基础URL**: `http://localhost:9280/api/v1`
 
 ## 目录
 
@@ -237,10 +237,11 @@ eventSource.onerror = (error) => {
 
 ## 技术栈
 
-- **运行时**: Node.js
-- **框架**: Express.js
-- **数据库**: SQLite (better-sqlite3)
-- **HTTP客户端**: Axios
+- **语言**: Python 3.13
+- **框架**: FastAPI
+- **数据库**: SQLite (标准库 sqlite3)
+- **HTTP客户端**: httpx
+- **包管理**: uv
 
 ---
 
