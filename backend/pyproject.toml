@@ -9,4 +9,5 @@ dependencies = [
     "uvicorn[standard]",
     "httpx",
     "python-dotenv",
+    "apscheduler>=3.11.2",
 ]
